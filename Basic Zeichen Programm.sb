@@ -1,0 +1,148 @@
+GraphicsWindow.MouseDown = paint1
+GraphicsWindow.MouseMove = onmousemove
+
+' Mause sub = unten
+
+P[1] = 2
+P[2] = 3
+D[1] = "black"
+
+' Variablen wenn gebraucht
+
+GraphicsWindow.Top = 300
+GraphicsWindow.Left = 1000
+GraphicsWindow.Title = "Small Basic Paint"
+
+TextWindow.Show()
+TextWindow.Left = 5
+TextWindow.Top = 280
+TextWindow.Title = "Zeichen Konsole"
+TextWindow.ForegroundColor = "White"
+
+'Window settings 
+
+again:
+
+TextWindow.Clear()
+
+again3:
+
+TextWindow.ForegroundColor = "White"
+
+TextWindow.WriteLine("1 = Einstellungen")
+TextWindow.WriteLine("2 = Alles Löschen")
+TextWindow.WriteLine("3 = Info")
+TextWindow.WriteLine("Alles andere = Beenden")
+TextWindow.WriteLine("")
+TextWindow.Write("Wähle deine Aktion aus: ")
+Auswahl = TextWindow.ReadNumber()
+
+again2:
+
+If (Auswahl = 1) Then
+  TextWindow.ForegroundColor = "gray"
+  TextWindow.WriteLine("")
+  TextWindow.WriteLine("1 = Farbe Wechsel")
+  TextWindow.WriteLine("2 = Zufalls Farbe")
+  TextWindow.WriteLine("3 = Pinsel größe")
+  TextWindow.WriteLine("4 = Radiergröße")
+  TextWindow.WriteLine("5 = zurück")
+  TextWindow.WriteLine("")
+  TextWindow.Write("Wähle deine Aktion aus: ")
+  Weiter = TextWindow.ReadNumber()
+  If (Weiter = 1) Then
+    Program.Delay(50)
+    TextWindow.WriteLine("")
+    TextWindow.Write("Bitte gib eine Farbe: ")
+    D[1] = TextWindow.Read()
+    GraphicsWindow.PenColor = D[1]
+    Goto again2
+    ElseIf(Weiter = 2) then
+    Program.Delay(50)
+    TextWindow.WriteLine("")
+    TextWindow.WriteLine("Zufalls Farbe wurde ausgesucht.")
+    D[1] = GraphicsWindow.GetRandomColor()
+    Goto again2
+    ElseIf (Weiter = 3) then
+    Program.Delay(50)
+    TextWindow.WriteLine("")
+    TextWindow.Write("Bitte gib eine größe zwischen 1 - 8 an: ")
+    p[1] = TextWindow.ReadNumber()
+    GraphicsWindow.PenWidth = P[1]
+    Goto again2
+    ElseIf (Weiter = 4) then
+    Program.Delay(50)
+    TextWindow.WriteLine("")
+    TextWindow.Write("Bitte gib eine größe zwischen 1 - 6 an: ")
+    p[2] = TextWindow.ReadNumber()
+    GraphicsWindow.PenWidth = P[2]
+    Goto again2
+    ElseIf (Weiter = 5) then
+    Program.Delay(50)
+    Goto again
+    Else
+    Program.Delay(50)
+    TextWindow.WriteLine("")
+    TextWindow.Write("Keine Gültige angabe. ")
+    TextWindow.WriteLine("")
+    Goto again2
+    Endif 
+EndIf
+
+' Einstellung
+
+If (Auswahl = 3) then
+  TextWindow.ForegroundColor = "green"
+TextWindow.WriteLine("")
+TextWindow.WriteLine("Linke Maustaste malen.")
+TextWindow.WriteLine("Rechte Maustaste Radieren.")
+TextWindow.WriteLine("Made by Nia.")
+TextWindow.WriteLine("")
+Goto again3
+endif
+
+'Infö über Steuerung + mehr
+
+If (Auswahl = 2) then
+  TextWindow.ForegroundColor = "gray"
+  Program.Delay(50)
+TextWindow.WriteLine("")
+TextWindow.WriteLine("Fläche wird gecleart.")
+GraphicsWindow.Clear()
+Goto again
+Else
+  GraphicsWindow.Title = "Beenden"
+  TextWindow.Title = "Beenden"
+  Program.Delay(300)
+  Program.End()
+endif
+
+' Lösch function and close funtcion
+
+Sub paint1
+ x = GraphicsWindow.MouseX
+  y = GraphicsWindow.MouseY
+EndSub
+
+Sub onmousemove
+  x = GraphicsWindow.MouseX
+  y = GraphicsWindow.MouseY
+  GraphicsWindow.PenWidth = P[1]
+  GraphicsWindow.PenColor = D[1]
+  If (Mouse.IsLeftButtonDown) Then
+    GraphicsWindow.DrawLine(prevX, prevY, x, y,)
+  EndIf
+  
+  'Malen
+  
+  If (Mouse.IsRightButtonDown) Then
+    GraphicsWindow.PenWidth = P[2]
+    GraphicsWindow.PenColor = "white" 
+    GraphicsWindow.DrawLine(prevX, prevY, x, y,)
+    GraphicsWindow.PenColor = D[1]
+  EndIf
+  prevX = x
+  prevY = y
+EndSub
+
+'Radieren
